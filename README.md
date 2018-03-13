@@ -1,4 +1,4 @@
 # tx-springboot
 
-> [Welcome!](https://www.cndotaer.com){:target="_blank"}
+> [Welcome!](https://www.cndotaer.com)
 
