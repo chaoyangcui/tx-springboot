@@ -21,6 +21,7 @@ public class HomeController {
     @RequestMapping(value = {"", "index", "home"}, method = RequestMethod.GET)
     public ModelAndView home() {
         logger.info(BANNER_BIG);
+        System.out.println(BANNER_BIG);
 
         ModelAndView view = new ModelAndView("home");
         view.addObject("banner", BANNER_DEFAULT);
