@@ -24,13 +24,13 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
  *
  * @author Eric
  * @since 2018/3/2 9:59
- * Description
  */
 @Configuration
 @ConfigurationProperties(prefix = "connector")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    /*@Bean
+    /*// 与application.properties中配置任选一个
+    @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer() {
         return container -> {
             Ssl ssl = new Ssl();
@@ -48,7 +48,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 new TomcatEmbeddedServletContainerFactory() {
                     @Override
                     protected void postProcessContext(Context context) {
-                        //SecurityConstraint必须存在，可以通过其为不同的URL设置不同的重定向策略。
+                        // SecurityConstraint必须存在，可以通过其为不同的URL设置不同的重定向策略。
                         SecurityConstraint securityConstraint = new SecurityConstraint();
                         securityConstraint.setUserConstraint("CONFIDENTIAL");
                         SecurityCollection collection = new SecurityCollection();
@@ -60,6 +60,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         factory.addAdditionalTomcatConnectors(createHttpConnector());
         return factory;
     }
+
     private Connector createHttpConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");
@@ -69,31 +70,32 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return connector;
     }
 
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        //Swagger ui Mapping
+        // Swagger ui Mapping
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
         // webjars Mapping
         registry.addResourceHandler("/webjars/**")
-                .addResourceLocations(
-                        "classpath:/META-INF/resources/webjars/");
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
         // 静态文件处理
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
 
         // 证书文件验证
         registry.addResourceHandler("/.well-known/pki-validation/fileauth.txt")
+                .addResourceLocations("classpath:/ssl/");
+
+        registry.addResourceHandler(".well-known/pki-validation/**")
                 .addResourceLocations("classpath:/ssl/");
     }
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
-        final SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        final SpringResourceTemplateResolver templateResolver =
+                new SpringResourceTemplateResolver();
         templateResolver.setCacheable(false);
         templateResolver.setPrefix("classpath:/static/");
         templateResolver.setSuffix(".html");
@@ -102,6 +104,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         templateResolver.setTemplateMode("LEGACYHTML5");
         return templateResolver;
     }
+
     @Bean
     public SpringTemplateEngine templateEngine() {
         final SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
@@ -115,15 +118,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
          */
         return springTemplateEngine;
     }
+
     @Bean
     public ThymeleafViewResolver viewResolver() {
         final ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setOrder(1);
         viewResolver.setCharacterEncoding("UTF-8");
-        viewResolver.setViewNames(new String[]{"*.html", "*.xhtml"});
+        viewResolver.setViewNames(new String[] {"*.html", "*.xhtml"});
         return viewResolver;
     }
+
     @Bean
     public UrlBasedViewResolver urlBasedViewResolver() {
         final UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
@@ -132,6 +137,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         urlBasedViewResolver.setOrder(2);
         return urlBasedViewResolver;
     }
+
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(viewResolver());
@@ -140,9 +146,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private int port;
     private int redirectPort;
+
     public void setPort(int port) {
         this.port = port;
     }
+
     public void setRedirectPort(int redirectPort) {
         this.redirectPort = redirectPort;
     }
