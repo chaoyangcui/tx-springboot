@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+</head>
+<body style="text-align: center">
+<pre id="banner"></pre>
+</body>
+
+<script th:inline="javascript">
+    const banner = [[${banner}]] || 'Welcome !';
+    console.log(banner);
+    document.getElementById('banner').innerText = banner;
+</script>
+</html>

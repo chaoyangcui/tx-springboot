@@ -1,5 +1,6 @@
 package com.tx.txspringboot;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -10,7 +11,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
 /**
  * Created by IntelliJ IDEA.
@@ -84,6 +91,52 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .addResourceLocations("classpath:/ssl/");
     }
 
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        final SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setCacheable(false);
+        templateResolver.setPrefix("classpath:/static/");
+        templateResolver.setSuffix(".html");
+        // templateResolver.setTemplateMode("HTML5");
+        // 非严格验证HTML代码,需额外依赖net.sourceforge.nekohtml-nekohtml
+        templateResolver.setTemplateMode("LEGACYHTML5");
+        return templateResolver;
+    }
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        final SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
+        springTemplateEngine.addTemplateResolver(templateResolver());
+        // springTemplateEngine.addDialect(new SpringStandardDialect());
+        springTemplateEngine.addDialect(new LayoutDialect());
+        /**
+         * @See https://github.com/thymeleaf/thymeleaf-extras-springsecurity
+         * springTemplateEngine.addDialect(new SpringSecurityDialect());
+         * springTemplateEngine.addDialect(new CmsDialect());
+         */
+        return springTemplateEngine;
+    }
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        final ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setOrder(1);
+        viewResolver.setCharacterEncoding("UTF-8");
+        viewResolver.setViewNames(new String[]{"*.html", "*.xhtml"});
+        return viewResolver;
+    }
+    @Bean
+    public UrlBasedViewResolver urlBasedViewResolver() {
+        final UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setViewNames(".jsp", ".tpl");
+        urlBasedViewResolver.setViewClass(FreeMarkerView.class);
+        urlBasedViewResolver.setOrder(2);
+        return urlBasedViewResolver;
+    }
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(viewResolver());
+        registry.viewResolver(urlBasedViewResolver());
+    }
 
     private int port;
     private int redirectPort;

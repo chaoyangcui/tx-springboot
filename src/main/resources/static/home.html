@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+</head>
+<body style="text-align: center">
+<pre id="banner"></pre>
+</body>
+
+<script th:inline="javascript">
+    const banner = [[${banner}]] || 'Welcome !';
+    console.log(banner);
+    document.getElementById('banner').innerText = banner;
+</script>
+<style>
+    pre {
+        /*width: 50%;*/
+        display: block;
+        /*font: normal 12px/22px Monaco, Monospace !important;*/
+        color: #CFDBEC;
+        background-color: #2f2f2f;
+        background-image: -webkit-repeating-linear-gradient(top, #444 0px, #444 22px, #2f2f2f 22px, #2f2f2f 44px);
+        background-image: -moz-repeating-linear-gradient(top, #444 0px, #444 22px, #2f2f2f 22px, #2f2f2f 44px);
+        background-image: -ms-repeating-linear-gradient(top, #444 0px, #444 22px, #2f2f2f 22px, #2f2f2f 44px);
+        background-image: -o-repeating-linear-gradient(top, #444 0px, #444 22px, #2f2f2f 22px, #2f2f2f 44px);
+        background-image: repeating-linear-gradient(top, #444 0px, #444 22px, #2f2f2f 22px, #2f2f2f 44px);
+        padding: 0 1em;
+        overflow: auto;
+    }
+</style>
+</html>
