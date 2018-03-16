@@ -1,6 +1,7 @@
 package com.tx.txspringboot;
 
 import com.tx.txspringboot.service.EmployeeService;
+import com.tx.txspringboot.service.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,18 @@ public class TxSpringbootApplicationTests {
 	@Autowired
 	EmployeeService employeeService;
 
+	@Autowired
+    RedisService redisService;
+
+
 	@Test
 	public void employee() {
 		employeeService.employee();
 	}
 
 	@Test
-	public void ws() {
-
+	public void redisTest() {
+        Object obj = redisService.redisOperation("");
+        System.out.println("redis: \n" + obj);
 	}
 }
