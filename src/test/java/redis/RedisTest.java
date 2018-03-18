@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPubSub;
 
 /**
  * Created by Intellij IDEA.
