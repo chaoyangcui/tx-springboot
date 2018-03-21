@@ -1,4 +1,4 @@
-package serial;
+package serialization;
 
 import com.tx.txspringboot.entitys.ExampleEntity;
 import org.apache.commons.io.IOUtils;
@@ -17,7 +17,7 @@ import java.io.*;
  * @since 2018/3/20 22:39
  */
 @RunWith(JUnit4.class)
-public class SerialTest {
+public class SerializationTest {
 
     @Test
     public void serial() throws IOException, ClassNotFoundException {
