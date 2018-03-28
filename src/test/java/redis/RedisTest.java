@@ -132,4 +132,16 @@ public class RedisTest {
 
         jedis.publish(channel, "test message");
     }
+
+    @Test
+    public void hset() {
+        Long hdel = jedis.hdel("person:1", "name");
+        System.out.println(hdel);
+
+        Long hset = jedis.hset("person:1", "name", "Eric");
+        System.out.println(hset);
+
+        String hget = jedis.hget("person:1", "name");
+        System.out.println(hget);
+    }
 }
