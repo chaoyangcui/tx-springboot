@@ -9,7 +9,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 @SpringBootApplication
-@Import({WebConfig.class})
+@Import({WebConfig.class, ZooConfig.class})
 public class TxSpringbootApplication {
 
     public static void main(String[] args) {
