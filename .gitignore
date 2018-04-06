@@ -10,3 +10,4 @@ target/
 /src/main/resources/application-prod.properties
 /src/main/resources/ssl/keystore.jks
 /src/main/resources/ssl/ssl.txt
+/example.obj
